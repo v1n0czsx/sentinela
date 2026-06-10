@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="container">
+
+        <h2>Triagem Hospitalar</h2>
+
+        <input id="nome" placeholder="Nome">
+
+        <select id="sintoma">
+            <option value="">Sintoma</option>
+            <option value="dor_leve">Dor leve</option>
+            <option value="resfriamento">Resfriado</option>
+            <option value="coriza">Coriza</option>
+            <option value="tosse">Tosse</option>
+            <option value="febre">Febre</option>
+            <option value="vomito">Vômito</option>
+            <option value="diarreia">Diarreira</option>
+            <option value="falta_ar_moderada">Falta de ar moderada</option>
+            <option value="falta_ar_grave">Falta de ar grave</option>
+            <option value="infarto">Suspeita de Infarto</option>
+            <option value="avc">Suspeita de AVC</option>
+            <option value="convulsao">Convulsão</option>
+            <option value="hemorragia">Hemorragia</option>
+            <option value="hemorroida">Hemorroida</option>
+            <option value="herpes">Herpes</option>
+            <option value="cifles">Cifles</option>
+            <option value="huntavírus">Huntavírus</option>
+            <option value="peste_bubonica">Peste Bubonica</option>
+            <option value="dearmatite">Dermatite</option>
+            <option value="micose">Micose</option>
+            <option value="epilepsia">Epilepsia</option>
+            <option value="fibrodisplasia_ossificante_progressiva">Fibrodisplasia Ossificante Progressiva</option>
+            <option value="pneumoultramicroscopicossilicovulcanocorniotico">Pneumoultramicroscopicossilicovulcanocorniótico</option>
+            <option value="paraclorobenzilpirrolidinonetilbenzimidazol">Paraclorobenzilpirrolidinonetilbenzimidazol</option>
+            <option value="dimetilaminofenildimetilpirazolona">Dimetilaminofenildimetilpirazolona</option>
+            <option value="hipopotomonstrosesquipedaliofobia">Hipopotomonstrosesquipedaliofobia</option>
+            <option value="tricolotimania">Tricolotimania</option>
+            <option value="borborigmo">Borborigmo</option>
+            <option value="xantelasma">Xantelasma</option>
+            <option value="prosopagnosia">Prosopagnosia</option>
+            <option value="fanizim">Fanizim</option>
+        </select>
+
+        <input 
+        id="temp"
+        type="number"
+        placeholder="Temperatura"
+        />
+
+        <input 
+        id="alergia"
+        placeholder="Alergias"
+        />
+
+        <textarea
+        id="observacao"
+        placeholder="Observações"
+        ></textarea>
+
+        <div id="resultado"></div>
+
+        <button onclick="salvar()">
+            Salvar Triagem
+        </button>
+
+    </div>
+
+    <script>
+
+function classificarRisco(
+    sintoma,
+    temperatura
+){
+
+    const vermelhos = [
+        "infarto",
+        "avc",
+        "convulsao",
+        "hemorragia",
+        "falta_ar_grave"
+    ];
+
+    const amarelos = [
+        "febre",
+        "vomito",
+        "diarreia",
+        "falta_ar_moderada"
+    ];
+
+    if (temperatura >= 39) {
+        return "vermelho";
+    }
+
+    if (vermelhos.includes(sintoma)) {
+        return "vermelho";
+    }
+
+    if (amarelos.includes(sintoma)) {
+        return "amarelo";
+    }
+
+    return "verde";
+}
+
+function salvar(){
+
+    const nome =
+        document.getElementById("nome").value;
+
+    const sintoma =
+        document.getElementById("sintoma").value;
+
+    const temperatura =
+        Number(
+            document.getElementById("temp").value
+        );
+
+    const alergia =
+        document.getElementById("alergia").value;
+
+    const observacao =
+        document.getElementById("observacao").value;
+
+    const risco =
+        classificarRisco(
+            sintoma,
+            temperatura
+        );
+
+    fetch(
+        "http://localhost:3000/triagem",
+        {
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                nome,
+                sintoma,
+                temperatura,
+                alergia,
+                observacao,
+                risco
+            })
+        }
+    )
+    .then(r => r.json())
+    .then(data => {
+
+        const resultado =
+            document.getElementById("resultado");
+
+        resultado.className = data.risco;
+
+        resultado.innerHTML =
+            "Classificação: " +
+            data.risco.toUpperCase();
+
+        alert("Triagem salva");
+    });
+}
+   
+    </script>
+
+</body>
+</html>

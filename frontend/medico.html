@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h2>Painel Médico</h2>
+    </div>
+
+    <div id="triagem">
+
+    <hr>
+
+    <h3>Consulta</h3>
+    <input id="paciente" placeholder="Paciente">
+    <input id="diagnotico" placeholder="Diagnóstico">
+    <input id="medicacoes" placeholder="Medicações">
+    <textarea id="obs" placeholder="Observações"></textarea>
+    <button onclick="salvar()">
+        Salvar
+    </button>
+    </div>
+
+    <script>
+        function carregar() {
+
+    fetch("/triagem")
+    .then(r => r.json())
+    .then(data => {
+
+        const div =
+            document.getElementById("triagem");
+
+        div.innerHTML = "";
+
+        data.forEach(t => {
+
+            div.innerHTML += `
+                <div class="card">
+
+                    <h3>${t.nome}</h3>
+
+                    <p>
+                        <b>Sintoma:</b>
+                        ${t.sintoma}
+                    </p>
+
+                    <p>
+                        <b>Temperatura:</b>
+                        ${t.temperatura} °C
+                    </p>
+
+                    <p>
+                        <span class="${t.risco}">
+                            ${t.risco}
+                        </span>
+                    </p>
+
+                    <button onclick='selecionar("${t.nome}")'>
+                        Atender
+                    </button>
+
+                </div>
+            `;
+        });
+    });
+}
+
+function salvar() {
+
+    fetch("/consulta",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+            paciente:
+                document.getElementById("paciente").value,
+
+            diagnostico:
+                document.getElementById("diagnostico").value,
+
+            medicacao:
+                document.getElementById("medicacoes").value,
+
+            obs:
+                document.getElementById("obs").value
+        })
+    });
+
+    alert("Consulta salva");
+}
+
+        carregar();
+    </script>
+    
+</body>
+</html>

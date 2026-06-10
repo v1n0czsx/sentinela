@@ -1,0 +1,25 @@
+{
+  "usuario": [
+    {
+      "id": 1,
+      "usuario": "admin",
+      "senha": "123",
+      "tipo": "atendimento"
+    },
+    {
+      "id": 2,
+      "usuario": "enfermeiro",
+      "senha": "123",
+      "tipo": "triagem"
+    },
+    {
+      "id": 3,
+      "usuario": "medico",
+      "senha": "123",
+      "tipo": "medico"
+    }
+  ],
+  "paciente": [],
+  "triagem": [],
+  "consulta": []
+}
