@@ -123,9 +123,3 @@ Triagem
 Médico
 ```
 
-## 👨‍💻 Autor
-
-Daniel Rocha
-
-GitHub:
-https://github.com/SEU-USUARIO
